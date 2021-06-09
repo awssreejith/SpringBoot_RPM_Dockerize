@@ -3,6 +3,7 @@
     <!-- Log file path -->
     <springProperty scope="context" name="ACTIVE_PROFILE" source="spring.profiles.active"/>
     <property name="HOME_LOG" value="C:/temp/MyApp_${ACTIVE_PROFILE}.log" />
+    <!--property name="HOME_LOG" value="/tmp/log/MyApp_${ACTIVE_PROFILE}.log" /-->
 
     <!-- Tells it as a file logging and its a rolling file -->
 
