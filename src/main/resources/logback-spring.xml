@@ -1,0 +1,64 @@
+<configuration>
+
+    <!-- Log file path -->
+    <springProperty scope="context" name="ACTIVE_PROFILE" source="spring.profiles.active"/>
+    <property name="HOME_LOG" value="C:/temp/MyApp_${ACTIVE_PROFILE}.log" />
+
+    <!-- Tells it as a file logging and its a rolling file -->
+
+    <!-- This is for prod profile. Here we will print all headers [see encoder section]-->
+    <springProfile name="prod">
+    <appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${HOME_LOG}</file>
+
+        <!-- Tells how the arhieving should happen. Its a size and time based policy -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- The name of the archived file -->
+            <fileNamePattern>C:/temp/archived/MyApp.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <!-- each archived file, size max 10MB -->
+            <maxFileSize>10MB</maxFileSize>
+            <!-- total size of all archive files, if total size > 20GB, it will delete old archived file -->
+            <totalSizeCap>20GB</totalSizeCap>
+            <!-- 60 days to keep -->
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d %p %c{1.} [%t] %m%n</pattern>
+        </encoder>
+    </appender>
+    </springProfile>
+
+
+    <!-- This is for dev profile. Here we will print all headers except time [see encoder section]-->
+    <springProfile name="dev">
+        <appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${HOME_LOG}</file>
+
+            <!-- Tells how the arhieving should happen. Its a size and time based policy -->
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <!-- The name of the archived file -->
+                <fileNamePattern>C:/temp/archived/MyApp.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+                <!-- each archived file, size max 10MB -->
+                <maxFileSize>10MB</maxFileSize>
+                <!-- total size of all archive files, if total size > 20GB, it will delete old archived file -->
+                <totalSizeCap>20GB</totalSizeCap>
+                <!-- 60 days to keep -->
+                <maxHistory>60</maxHistory>
+            </rollingPolicy>
+
+            <encoder>
+                <pattern>%p %c{1.} [%t] %m%n</pattern>
+            </encoder>
+        </appender>
+    </springProfile>
+
+
+    <!--logger name="com.Logging" level="debug" additivity="false">
+        <appender-ref ref="FILE-ROLLING"/>
+    </logger-->
+
+    <root level="info">
+        <appender-ref ref="FILE-ROLLING"/>
+    </root>
+</configuration>
